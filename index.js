@@ -42,14 +42,15 @@ console.log(double(num1));
 // 例) 引数: [1, 3, 2, 5, 4], 返り値: 5
 // ※ 引数の数は何個でも受け取れる様にしてください
 // ※ Math.maxは使用しないでください
-const maxElement = (array) => {
-  let maxNum = 0;
-  for (const num of array) {
-    if (num > maxNum) maxNum = num;
+const maxElement = (nums) => {
+  // インデックスを取る
+  let maxNum = 0
+  for (const num of nums) {
+    if (num > maxNum) maxNum = num 
   }
-
-  return maxNum;
-};
+  
+  return maxNum
+}
 
 const array2 = [1, 3, 2, 5, 4];
 
@@ -67,7 +68,7 @@ console.log(even(array3));
 // 例) 引数: [1, 2, 3, 2, 4, 5, 6, 5, 6], 返り値: [1, 2, 3, 4, 5, 6]
 
 const duplicateRemoval = (array) =>
-  array.filter((element, index) => array.indexOf(element) == index);
+  array.filter((element, index) => array.indexOf(element) === index);
 
 const array4 = [1, 2, 3, 2, 4, 5, 6, 5, 6];
 
