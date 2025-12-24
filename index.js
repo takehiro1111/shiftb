@@ -66,12 +66,8 @@ console.log(even(array3));
 // 問題4: 配列内の重複を除去する関数を作成して実行してください。
 // 例) 引数: [1, 2, 3, 2, 4, 5, 6, 5, 6], 返り値: [1, 2, 3, 4, 5, 6]
 
-const duplicateRemoval = (array) => {
-  const newArray = array.filter(
-    (element, index) => array.indexOf(element) == index
-  );
-  return newArray;
-};
+const duplicateRemoval = (array) =>
+  array.filter((element, index) => array.indexOf(element) == index);
 
 const array4 = [1, 2, 3, 2, 4, 5, 6, 5, 6];
 
@@ -95,11 +91,11 @@ console.log(doubleArray(array6));
 
 // 問題7: 文字列の配列を受け取り、index番号を付けたオブジェクトを返す関数を作成して実行してください。
 // 例) 引数: ['a', 'b', 'c'], 返り値: [{ index: 0, value: 'a' }, { index: 1, value: 'b' }, { index: 2, value: 'c' }]
-const genNewObj = (array) => {
-  return array.map((value, index) => {
-    index, value;
-  });
-};
+const genNewObj = (array) =>
+  array.map((value, index) => ({
+    index,
+    value,
+  }));
 
 const array7 = ["a", "b", "c"];
 
@@ -122,11 +118,8 @@ console.log(ageJudge(persons8, age8));
 
 // 問題9: 数字の配列を引数として受け取り、偶数のみをフィルタリングし、その後各要素を2倍にした新しい配列を返す関数を作成して実行してください。
 // 例) 引数: [1, 2, 3, 4, 5, 6], 返り値: [4, 8, 12]
-const evenFilter = (array) => {
-  return array
-    .filter((element) => element % 2 === 0)
-    .map((element) => element * 2);
-};
+const evenFilter = (array) =>
+  array.filter((element) => element % 2 === 0).map((element) => element * 2);
 
 const array9 = [1, 2, 3, 4, 5, 6];
 
