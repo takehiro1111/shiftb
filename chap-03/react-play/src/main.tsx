@@ -1,17 +1,37 @@
-// import { StrictMode } from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import ForList from './Components/ForList.tsx'
+import ForNest from './Components/ForNest.tsx'
+import StateForm from './Components/StateForm.tsx'
+import StateFormUC from './Components/StateFormUC.tsx'
+import FormTextArea from './Components/FormTextarea.tsx'
 import './index.css'
-// import App from './App.tsx'
+import App from './App.tsx'
 
-const root  = createRoot(document.getElementById('root')!)
-// .render(
-//   <StrictMode>
-//     <App />
-//   </StrictMode>,
-// )
+const webSite = [
+  {id: 1, url: "https://www.nextbeat.co.jp/en", title: "ネクストビート"},
+  {id: 1, url: "https://www.b-tm.co.jp/", title: "BTM"}
+]
 
-setInterval(() => {
-  root.render(
-    <p>現在時刻: {new Date().toLocaleString()}</p>
-  )
-}, 3000)
+const src = [
+  {id: 1, title: "title-1"},
+  {id: 2, title: "title-2"},
+]
+
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+    <ForList src={webSite}/>
+    <ForNest src={src}/>
+    <StateForm/>
+    <StateFormUC/>
+    <FormTextArea/>
+  </StrictMode>,
+)
+
+// setInterval(() => {
+//   root.render(
+//     <p>現在時刻: {new Date().toLocaleString()}</p>
+//   )
+// }, 3000)
