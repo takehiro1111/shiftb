@@ -9,6 +9,7 @@ import FormSelect from './Components/FormSelect.tsx'
 import FormList from './Components/FormList.tsx'
 import FormRadio from './Components/FormRadio.tsx'
 import FormCheck from './Components/FormCheck.tsx'
+import FormCheckMulti from './Components/FormCheckMulti.tsx'
 import './index.css'
 import App from './App.tsx'
 
@@ -35,6 +36,7 @@ createRoot(document.getElementById('root')!).render(
     <FormList/>
     <FormRadio/>
     <FormCheck/>
+    <FormCheckMulti/>
   </StrictMode>,
 )
 
