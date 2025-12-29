@@ -5,12 +5,16 @@ import ForNest from './Components/ForNest.tsx'
 import StateForm from './Components/StateForm.tsx'
 import StateFormUC from './Components/StateFormUC.tsx'
 import FormTextArea from './Components/FormTextarea.tsx'
+import FormSelect from './Components/FormSelect.tsx'
+import FormList from './Components/FormList.tsx'
+import FormRadio from './Components/FormRadio.tsx'
+import FormCheck from './Components/FormCheck.tsx'
 import './index.css'
 import App from './App.tsx'
 
 const webSite = [
   {id: 1, url: "https://www.nextbeat.co.jp/en", title: "ネクストビート"},
-  {id: 1, url: "https://www.b-tm.co.jp/", title: "BTM"}
+  {id: 2, url: "https://www.b-tm.co.jp/", title: "BTM"}
 ]
 
 const src = [
@@ -27,6 +31,10 @@ createRoot(document.getElementById('root')!).render(
     <StateForm/>
     <StateFormUC/>
     <FormTextArea/>
+    <FormSelect/>
+    <FormList/>
+    <FormRadio/>
+    <FormCheck/>
   </StrictMode>,
 )
 

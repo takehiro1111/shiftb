@@ -8,7 +8,9 @@ type Props = {
 export default function ForNest({src}: Props) {
   return (
     <dl>
-      {src.map((elem) => (<ForItem book={elem}/>))}
+      {src.map((elem) => (<ForItem key={elem.id} book={elem}/>))}
     </dl>
+
+    
   )
 }

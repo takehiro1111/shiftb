@@ -7,12 +7,10 @@ export default function ForList({src}: Props) {
     <dl>
       {
         src.map((elem) => (
-          <>
             <dt key={elem.id}>
               <h2>TItle: {elem.title}</h2>
               <a href={elem.url}>サイトへ</a>
             </dt>
-          </>
         ))
       }
     </dl>
