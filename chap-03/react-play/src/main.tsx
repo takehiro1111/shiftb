@@ -10,6 +10,8 @@ import FormList from './Components/FormList.tsx'
 import FormRadio from './Components/FormRadio.tsx'
 import FormCheck from './Components/FormCheck.tsx'
 import FormCheckMulti from './Components/FormCheckMulti.tsx'
+import FormFile from './Components/FormFile.tsx'
+import StateNest from './Components/StateNest.tsx'
 import './index.css'
 import App from './App.tsx'
 
@@ -37,6 +39,8 @@ createRoot(document.getElementById('root')!).render(
     <FormRadio/>
     <FormCheck/>
     <FormCheckMulti/>
+    <FormFile/>
+    <StateNest/>
   </StrictMode>,
 )
 
