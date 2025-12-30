@@ -13,6 +13,9 @@ import FormCheckMulti from './Components/FormCheckMulti.tsx'
 import FormFile from './Components/FormFile.tsx'
 import StateNest from './Components/StateNest.tsx'
 import StateTodo from './Components/StateTodo.tsx'
+import StateEffect from './Components/StateEffect.tsx'
+import HookTimer from './Components/HookTimer.tsx'
+import HookEffect from './Components/HookEffect.tsx'
 import './index.css'
 import App from './App.tsx'
 
@@ -43,6 +46,9 @@ createRoot(document.getElementById('root')!).render(
     <FormFile/>
     <StateNest/>
     <StateTodo/>
+    <StateEffect init={0}/>
+    <HookTimer init={0}/>
+    <HookEffect init={10000}/>
   </StrictMode>,
 )
 
