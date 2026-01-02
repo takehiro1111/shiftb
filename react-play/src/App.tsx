@@ -7,19 +7,20 @@ function App() {
   return (
     <>
       <div>
-        <h1>記事一覧ページ</h1>
+        <title>記事一覧ページ</title>
         <ul>
-          {posts &&
-            posts.map((element) => {
-              return (
-                <li key={element.id}>
-                  <a href={element.thumbnailUrl}>{element.title}</a>
+          {posts.map((element) => {
+            return (
+              <li key={element.id}>
+                <a href={element.thumbnailUrl}>
+                  <h2>{element.title}</h2>
                   <p>{element.createdAt}</p>
                   <p>{element.categories}</p>
                   <p>{element.content}</p>
-                </li>
-              );
-            })}
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </>
