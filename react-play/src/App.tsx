@@ -13,8 +13,7 @@ function App() {
             posts.map((element) => {
               return (
                 <li key={element.id}>
-                  <h2>{element.title}</h2>
-                  <a>{element.thumbnailUrl}</a>
+                  <a href={element.thumbnailUrl}>{element.title}</a>
                   <p>{element.createdAt}</p>
                   <p>{element.categories}</p>
                   <p>{element.content}</p>
