@@ -16,7 +16,7 @@ import { createRoot } from 'react-dom/client'
 // import StateEffect from './Components/StateEffect.tsx'
 // import HookTimer from './Components/HookTimer.tsx'
 // import HookEffect from './Components/HookEffect.tsx'
-import DisplayPostalCode from './Components/DisplayPostalCode.tsx'
+// import DisplayPostalCode from './Components/DisplayPostalCode.tsx'
 import './index.css'
 import App from './App.tsx'
 
@@ -50,7 +50,7 @@ createRoot(document.getElementById('root')!).render(
     <StateEffect init={0}/>
     <HookTimer init={0}/>
     <HookEffect init={10000}/> */}
-    <DisplayPostalCode/>
+    {/* <DisplayPostalCode/> */}
   </StrictMode>,
 )
 
