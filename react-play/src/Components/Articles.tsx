@@ -10,7 +10,7 @@ export function Articles() {
           {posts.map((element) => {
             return (
               <li key={element.id}>
-                  <Link to={`/posts/${element.id}`}>{element.title}</Link>
+                <Link to={`/posts/${element.id}`}>{element.title}</Link>
               </li>
             );
           })}
@@ -19,5 +19,3 @@ export function Articles() {
     </>
   );
 }
-
-
