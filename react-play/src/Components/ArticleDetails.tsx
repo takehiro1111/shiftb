@@ -1,25 +1,26 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { type Post } from "../types/Post";
+import { useQuery } from "@tanstack/react-query";
 
 export function ArticleDetails() {
   const { id } = useParams();
-  const [posts, setPosts] = useState<Post | null>(null);
 
-  useEffect(() => {
-    const fetcher = async () => {
-      const res = await fetch(
+  const { data: posts, isLoading } = useQuery({
+    queryKey: ["detail", id],
+    queryFn: () =>
+      fetch(
         `https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts/${id}`
-      );
-      const data = await res.json();
-      setPosts(data.post);
-    };
+      )
+        .then((res) => res.json())
+        .then((data) => data.post as Post),
+  });
 
-    fetcher();
-  }, [id]);
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
 
   if (!posts) {
-    return <p>記事データが取得できませんでした。</p>;
+    return <p>記事が見つかりません</p>;
   }
 
   return (
