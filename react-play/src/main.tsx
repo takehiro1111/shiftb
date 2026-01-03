@@ -1,5 +1,5 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 // import ForList from './Components/ForList.tsx'
 // import ForNest from './Components/ForNest.tsx'
 // import StateForm from './Components/StateForm.tsx'
@@ -17,8 +17,9 @@ import { createRoot } from 'react-dom/client'
 // import HookTimer from './Components/HookTimer.tsx'
 // import HookEffect from './Components/HookEffect.tsx'
 // import DisplayPostalCode from './Components/DisplayPostalCode.tsx'
-import './index.css'
-import App from './App.tsx'
+import "./index.css";
+import App from "./App.tsx";
+import { BrowserRouter } from "react-router-dom";
 
 // const webSite = [
 //   {id: 1, url: "https://www.nextbeat.co.jp/en", title: "ネクストビート"},
@@ -30,11 +31,11 @@ import App from './App.tsx'
 //   {id: 2, title: "title-2"},
 // ]
 
-
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-    {/* <ForList src={webSite}/>
+    <BrowserRouter>
+      <App />
+      {/* <ForList src={webSite}/>
     <ForNest src={src}/>
     <StateForm/>
     <StateFormUC/>
@@ -50,9 +51,10 @@ createRoot(document.getElementById('root')!).render(
     <StateEffect init={0}/>
     <HookTimer init={0}/>
     <HookEffect init={10000}/> */}
-    {/* <DisplayPostalCode/> */}
-  </StrictMode>,
-)
+      {/* <DisplayPostalCode/> */}
+    </BrowserRouter>
+  </StrictMode>
+);
 
 // setInterval(() => {
 //   root.render(

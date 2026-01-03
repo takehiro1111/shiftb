@@ -1,27 +1,18 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-import { posts } from "./data/posts";
+import { Articles } from "./Components/Articles";
+import { ArticleDetails } from "./Components/ArticleDetails";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
+import { Header } from "./Components/Header";
 
 function App() {
   return (
     <>
+      <Header />
       <div>
-        <title>記事一覧ページ</title>
-        <ul>
-          {posts.map((element) => {
-            return (
-              <li key={element.id}>
-                <a href={element.thumbnailUrl}>
-                  <h2>{element.title}</h2>
-                  <p>{element.createdAt}</p>
-                  <p>{element.categories}</p>
-                  <p>{element.content}</p>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
+          <Routes>
+            <Route path="/" element={<Articles />} />
+            <Route path="/posts/:id" element={<ArticleDetails />} />
+          </Routes>
       </div>
     </>
   );
