@@ -4,10 +4,10 @@ export default function FormFile() {
   const file = useRef<HTMLInputElement>(null);
 
   const show = () => {
-    console.log(file)
+    console.log(file);
     const fs = file.current?.files;
-    console.log("fs", fs)
-    if (!fs) return
+    console.log("fs", fs);
+    if (!fs) return;
 
     for (const f of fs) {
       console.log(`ファイル名: ${f.name}`);

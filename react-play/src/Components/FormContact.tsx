@@ -1,7 +1,9 @@
 import { z } from "zod";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { contactFormSchema } from "../schemas/contact";
+import axios from "axios";
 
 type Mode = {
   mode: "onChange" | "onBlur" | "onSubmit";
@@ -9,6 +11,8 @@ type Mode = {
 };
 
 export function FormContact({ mode, title }: Mode) {
+  const [disabled, setDisabled] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -17,6 +21,7 @@ export function FormContact({ mode, title }: Mode) {
   } = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
     mode: mode,
+    disabled,
     defaultValues: {
       name: "",
       email: "",
@@ -24,8 +29,28 @@ export function FormContact({ mode, title }: Mode) {
     },
   });
 
-  const onSubmitHandle = (data: z.infer<typeof contactFormSchema>) => {
-    console.log(data);
+  const onSubmitHandle = async (data: z.infer<typeof contactFormSchema>) => {
+    try {
+      setDisabled(true);
+      const body = {
+        name: data.name,
+        email: data.email,
+        message: data.body,
+      };
+      const res = await axios.post(
+        "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/contacts",
+        body
+      );
+
+      console.log(res);
+      alert("送信しました。");
+      reset();
+      return res.data;
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setDisabled(false);
+    }
   };
 
   return (
@@ -86,8 +111,9 @@ export function FormContact({ mode, title }: Mode) {
           </button>
           <button
             type="button"
-            onClick={() => reset}
+            onClick={() => reset()}
             className="bg-gray-300 text-black font-bold px-4 py-2 rounded"
+            disabled={disabled}
           >
             クリア
           </button>
