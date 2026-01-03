@@ -1,5 +1,6 @@
 import { Articles } from "./Components/Articles";
 import { ArticleDetails } from "./Components/ArticleDetails";
+import { FormContact } from "./Components/FormContact";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import { Header } from "./Components/Header";
@@ -30,6 +31,12 @@ function App() {
           <Routes>
             <Route path="/" element={<Articles />} />
             <Route path="/posts/:id" element={<ArticleDetails />} />
+            <Route
+              path="/contact"
+              element={
+                <FormContact mode="onSubmit" title="お問い合わせフォーム" />
+              }
+            />
           </Routes>
         </div>
       </QueryClientProvider>
