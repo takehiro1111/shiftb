@@ -10,6 +10,9 @@ type Mode = {
   title: string;
 };
 
+const BASE_URL =
+  "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/contacts";
+
 export function FormContact({ mode, title }: Mode) {
   const [disabled, setDisabled] = useState<boolean>(false);
 
@@ -37,10 +40,7 @@ export function FormContact({ mode, title }: Mode) {
         email: data.email,
         message: data.body,
       };
-      const res = await axios.post(
-        "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/contacts",
-        body
-      );
+      const res = await axios.post(BASE_URL, body);
 
       console.log(res);
       alert("送信しました。");
