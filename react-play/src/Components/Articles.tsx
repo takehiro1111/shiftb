@@ -1,20 +1,16 @@
 import { Link } from "react-router-dom";
-import { type Post } from "../types/Post";
-import { useQuery } from "@tanstack/react-query";
+import usePosts from "../hooks/usePost";
+import type { Post } from "../types/Post";
 
 export function Articles() {
-  const { data: posts, isLoading } = useQuery({
-    queryKey: ["articles"],
-    queryFn: () =>
-      fetch(
-        "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts"
-      )
-        .then((res) => res.json())
-        .then((data) => data.posts as Post[]),
-  });
+  const { data, isLoading } = usePosts<{ posts: Post[] }>("posts");
 
   if (isLoading) {
     return <span>Loading...</span>;
+  }
+
+  if (!data) {
+    return <p>記事が存在しません。</p>;
   }
 
   return (
@@ -22,7 +18,7 @@ export function Articles() {
       <div>
         <title>記事一覧ページ</title>
         <ul>
-          {posts?.map((element) => {
+          {data.posts.map((element) => {
             return (
               <li key={element.id}>
                 <Link to={`/posts/${element.id}`}>{element.title}</Link>
