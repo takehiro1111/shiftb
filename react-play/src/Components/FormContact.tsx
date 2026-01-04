@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { contactFormSchema } from "../schemas/contact";
@@ -14,17 +13,14 @@ const BASE_URL =
   "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/contacts";
 
 export function FormContact({ mode, title }: Mode) {
-  const [disabled, setDisabled] = useState<boolean>(false);
-
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof contactFormSchema>>({
     resolver: zodResolver(contactFormSchema),
     mode: mode,
-    disabled,
     defaultValues: {
       name: "",
       email: "",
@@ -34,7 +30,6 @@ export function FormContact({ mode, title }: Mode) {
 
   const onSubmitHandle = async (data: z.infer<typeof contactFormSchema>) => {
     try {
-      setDisabled(true);
       const body = {
         name: data.name,
         email: data.email,
@@ -48,8 +43,6 @@ export function FormContact({ mode, title }: Mode) {
       return res.data;
     } catch (e) {
       console.log(e);
-    } finally {
-      setDisabled(false);
     }
   };
 
@@ -68,7 +61,8 @@ export function FormContact({ mode, title }: Mode) {
             type="text"
             id="userName"
             {...register("name")}
-            className="flex-1 border border-gray-300 rounded px-3 py-2"
+            className="flex-1 border border-gray-300 rounded px-3 py-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            disabled={isSubmitting}
           />
           {errors.name && (
             <span className="text-red-500">{errors.name.message}</span>
@@ -82,7 +76,8 @@ export function FormContact({ mode, title }: Mode) {
             type="email"
             id="email"
             {...register("email")}
-            className="flex-1 border border-gray-300 rounded px-3 py-2"
+            className="flex-1 border border-gray-300 rounded px-3 py-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            disabled={isSubmitting}
           />
           {errors.email && (
             <span className="text-red-500">{errors.email.message}</span>
@@ -96,7 +91,8 @@ export function FormContact({ mode, title }: Mode) {
             id="body"
             rows={5}
             {...register("body")}
-            className="flex-1 border border-gray-300 rounded px-3 py-2"
+            className="flex-1 border border-gray-300 rounded px-3 py-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            disabled={isSubmitting}
           />
           {errors.body && (
             <span className="text-red-500">{errors.body.message}</span>
@@ -105,15 +101,16 @@ export function FormContact({ mode, title }: Mode) {
         <div className="flex gap-5 pl-36">
           <button
             type="submit"
-            className="bg-black text-white font-bold px-4 py-2 rounded"
+            className="bg-black text-white font-bold px-4 py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+            disabled={isSubmitting}
           >
             送信
           </button>
           <button
             type="button"
             onClick={() => reset()}
-            className="bg-gray-300 text-black font-bold px-4 py-2 rounded"
-            disabled={disabled}
+            className="bg-gray-300 text-black font-bold px-4 py-2 rounded disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+            disabled={isSubmitting}
           >
             クリア
           </button>
