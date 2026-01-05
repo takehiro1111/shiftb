@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import { useQuery, type QueryKey } from "@tanstack/react-query";
 import axios from "axios";
 
-const BASE_URL =
+export const BASE_URL =
   "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev";
 
 export default function useFetch<T>(queryKey: QueryKey, path: string) {

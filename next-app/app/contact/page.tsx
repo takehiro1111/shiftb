@@ -1,5 +1,3 @@
-"use client";
-
 import { FormContact } from "@/Components/FormContact";
 
 export default function ContactPage() {
