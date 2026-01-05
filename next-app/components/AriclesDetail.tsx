@@ -1,5 +1,8 @@
-import { useParams } from "react-router-dom";
-import { type Post } from "../types/Post";
+"use client"
+
+import Image from "next/image";
+import { useParams } from 'next/navigation'
+import type { Post } from "@/types/post";
 import useFetch from "../hooks/useFetch";
 
 export function ArticleDetails() {
@@ -24,7 +27,7 @@ export function ArticleDetails() {
   return (
     <>
       <div>
-        <img src={data.post.thumbnailUrl} alt="サンプル画像" />
+        <Image src={data.post.thumbnailUrl} alt="サンプル画像" />
         <h2>APIで取得した記事タイトル:{id}</h2>
         <a href={data.post.thumbnailUrl}>{data.post.title}</a>
         <div dangerouslySetInnerHTML={{ __html: data.post.content }} />
