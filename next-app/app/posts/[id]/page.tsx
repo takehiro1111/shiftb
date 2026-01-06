@@ -1,4 +1,4 @@
-import { ArticleDetails } from "@/Components/AriclesDetail";
+import { ArticleDetails } from "@/app/posts/[id]/_components/AriclesDetail";
 
 export default function PostPage() {
   return <ArticleDetails />;

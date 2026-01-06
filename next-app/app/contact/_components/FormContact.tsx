@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { contactFormSchema } from "@/schemas/contact";
+import { contactFormSchema } from "@/app/_schemas/contact";
 import axios from "axios";
 
 type Mode = {

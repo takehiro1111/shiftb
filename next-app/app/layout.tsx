@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Header } from "@/Components/Header";
+import Link from "next/link";
 import { Providers } from "@/app/providers";
 import "./globals.css";
 
@@ -18,7 +18,14 @@ export default function RootLayout({
       <html lang="ja">
         <body>
           <Providers>
-            <Header />
+            <header className="flex gap-4 p-4 bg-gray-800">
+              <Link href="/" className="text-white hover:text-gray-300">
+                Blog
+              </Link>
+              <Link href="/contact" className="text-white hover:text-gray-300">
+                お問い合わせ
+              </Link>
+            </header>
             {children}
           </Providers>
         </body>

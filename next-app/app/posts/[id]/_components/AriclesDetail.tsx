@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { useParams } from "next/navigation";
-import type { Post } from "@/types/post";
-import useFetch, { BASE_URL } from "@/hooks/useFetch";
+import type { Post } from "@/app/_types/post";
+import useFetch, { BASE_URL } from "@/app/_hooks/useFetch";
 
 export function ArticleDetails() {
   const { id } = useParams();
@@ -12,17 +13,9 @@ export function ArticleDetails() {
     `${BASE_URL}/posts/${id}`
   );
 
-  if (!id) {
-    return <p>記事IDが指定されていません。</p>;
-  }
-
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
-
-  if (!data?.post) {
-    return <p>記事が見つかりません</p>;
-  }
+  if (!id) return <p>記事IDが指定されていません。</p>;
+  if (isLoading) return <span>Loading...</span>;
+  if (!data?.post) return notFound();
 
   return (
     <>
