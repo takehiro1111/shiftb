@@ -1,22 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import usePosts from "@/app/_hooks/usePost";
-import type { Post } from "@/app/_types/post";
+import { useEffect, useState } from "react";
+import { MicroCmsPost } from "@/app/_types/MicroCmsPost";
 
 export default function Home() {
-  const { data, isLoading } = usePosts<{ posts: Post[] }>("posts");
+  const [posts, setPosts] = useState<MicroCmsPost[]>([]);
 
-  if (isLoading) return <span>Loading...</span>;
-  if (!data) return notFound();
+  useEffect(() => {
+    const fetcher = async () => {
+      const res = await fetch("https://rxoongcgrp.microcms.io/api/v1/posts", {
+        headers: {
+          "X-MICROCMS-API-KEY": process.env
+            .NEXT_PUBLIC_MICRO_CMS_API_KEY as string,
+        },
+      });
+      const { contents } = await res.json();
+      setPosts(contents);
+    };
+
+    fetcher();
+  }, []);
 
   return (
     <>
       <div className="max-w-2xl mx-auto p-4">
         <h1 className="text-2xl font-bold mb-4">記事一覧</h1>
         <div className="grid gap-4">
-          {data.posts.map((element) => {
+          {posts.map((element) => {
             return (
               <Link
                 key={element.id}

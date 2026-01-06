@@ -10,6 +10,7 @@ to be optimized from a specific hostname using HTTPS protocol. */
           protocol: "https",
           hostname: "placehold.jp",
         },
+        { protocol: "https", hostname: "images.microcms-assets.io" },
       ],
     },
   };
