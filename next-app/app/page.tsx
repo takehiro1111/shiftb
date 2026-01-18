@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { MicroCmsPost } from "@/app/_types/MicroCmsPost";
 
-export default function Home() {
+export function Home() {
   const [posts, setPosts] = useState<MicroCmsPost[]>([]);
 
   useEffect(() => {
