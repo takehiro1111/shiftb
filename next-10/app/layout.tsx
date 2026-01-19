@@ -34,7 +34,7 @@ export default function RootLayout({
         <SidebarProvider>
           <AppSidebar />
           <main className="flex-1 pt-14">
-            <SidebarTrigger />
+            <SidebarTrigger className="size-8 hover:bg-blue-100" />
             <div className="min-h-screen bg-zinc-50 p-4 font-sans dark:bg-black">
               {children}
             </div>
