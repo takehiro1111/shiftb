@@ -22,7 +22,7 @@ export function AppSidebar() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href="/articles">記事一覧</Link>
+                  <Link href="/admin/posts">記事一覧</Link>
                 </SidebarMenuButton>
                 <SidebarMenuButton asChild>
                   <Link href="/categories">カテゴリ一覧</Link>

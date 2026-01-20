@@ -1,6 +1,9 @@
-import { prisma } from "@/app/_libs/prisma";
+import { prisma } from "../app/_libs/prisma";
 
 async function main() {
+  // 既存データを削除
+  await prisma.post.deleteMany();
+
   const posts = await prisma.post.createMany({
     data: [
       {
