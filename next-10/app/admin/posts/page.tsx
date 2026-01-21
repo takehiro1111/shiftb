@@ -2,8 +2,8 @@ import { notFound } from "next/navigation";
 import { PostModel } from "@/app/generated/prisma/models/Post";
 import Link from "next/link";
 
-export default async function PostPage() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`);
+export default async function Page() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/posts`);
   const { posts } = await res.json();
 
   if (posts === null) return <span>Loading...</span>;
