@@ -6,10 +6,11 @@ import { PostUpdateFormSchema } from "@/app/_schemas/form";
 import { useEffect, useState } from "react";
 
 import { PostModel } from "@/app/generated/prisma/models/Post";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 export default function PostUpdate() {
   const { id } = useParams();
+  const router = useRouter()
   const [postData, setPostData] = useState<PostModel | null>(null);
 
   const onSubmitHandle = async (
@@ -31,6 +32,7 @@ export default function PostUpdate() {
 
       alert("更新しました。");
       reset();
+      router.push("/admin/posts")
     } catch (e) {
       console.log(e);
     }

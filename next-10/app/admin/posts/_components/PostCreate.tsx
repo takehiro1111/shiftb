@@ -3,8 +3,11 @@
 import PostForm from "@/app/admin/posts/_components/PostForm";
 import { z } from "zod";
 import { PostUpdateFormSchema } from "@/app/_schemas/form";
+import { useRouter } from "next/navigation";
 
 export default function PostCreate() {
+  const router = useRouter();
+
   const onSubmitHandle = async (
     data: z.infer<typeof PostUpdateFormSchema>,
     reset: () => void,
@@ -24,6 +27,7 @@ export default function PostCreate() {
 
       alert("作成しました。");
       reset();
+      router.push("/admin/posts");
     } catch (e) {
       console.log(e);
     }
