@@ -18,7 +18,17 @@ async function main() {
       },
     ],
   });
-  console.log({ posts });
+  const categories = await prisma.category.createMany({
+    data: [
+      {
+        name: "最初のカテゴリ",
+      },
+      {
+        name: "2番目のカテゴリ",
+      },
+    ],
+  });
+  console.log({ posts, categories });
 }
 main()
   .then(async () => {

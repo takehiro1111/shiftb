@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { PostUpdateFormSchema } from "@/app/_schemas/form";
+import { PostFormSchema } from "@/app/_schemas/form";
 import { PostModel } from "@/app/generated/prisma/models/Post";
 
 export type PostFormProps = {
   title: "記事作成" | "記事編集";
   onSubmitHandle: (
-    data: z.infer<typeof PostUpdateFormSchema>,
+    data: z.infer<typeof PostFormSchema>,
     reset: () => void,
   ) => Promise<void>;
 

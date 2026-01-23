@@ -1,25 +1,23 @@
 "use client";
 
-import PostForm from "@/app/admin/posts/_components/PostForm";
+import CategoryForm from "@/app/admin/categories/_components/CategoryForm";
 import { z } from "zod";
-import { PostFormSchema } from "@/app/_schemas/form";
+import { CategoryFormSchema } from "@/app/_schemas/form";
 import { useRouter } from "next/navigation";
 
-export default function PostCreate() {
+export default function Page() {
   const router = useRouter();
 
   const onSubmitHandle = async (
-    data: z.infer<typeof PostFormSchema>,
+    data: z.infer<typeof CategoryFormSchema>,
     reset: () => void,
   ): Promise<void> => {
     try {
       const body = {
-        title: data.title,
-        content: data.content,
-        thumbnailUrl: data.thumbnailUrl,
+        name: data.name,
       };
 
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/posts`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/categories`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -27,15 +25,15 @@ export default function PostCreate() {
 
       alert("作成しました。");
       reset();
-      router.push("/admin/posts");
+      router.push("/admin/categories");
     } catch (e) {
       console.log(e);
     }
   };
 
   return (
-    <PostForm
-      title="記事作成"
+    <CategoryForm
+      title="カテゴリー作成"
       onSubmitHandle={onSubmitHandle}
       showDeleteButton={false}
       mode="onSubmit"

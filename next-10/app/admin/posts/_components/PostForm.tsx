@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PostUpdateFormSchema } from "@/app/_schemas/form";
+import { PostFormSchema } from "@/app/_schemas/form";
 import { type PostFormProps } from "@/app/admin/posts/_components/_types/props";
 
 export default function PostForm({
@@ -19,8 +19,8 @@ export default function PostForm({
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<z.infer<typeof PostUpdateFormSchema>>({
-    resolver: zodResolver(PostUpdateFormSchema),
+  } = useForm<z.infer<typeof PostFormSchema>>({
+    resolver: zodResolver(PostFormSchema),
     mode: mode ?? "onSubmit",
     defaultValues: {
       title: post?.title,

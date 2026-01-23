@@ -7,7 +7,7 @@ import { PostModel } from "@/app/generated/prisma/models/Post";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PostUpdateFormSchema } from "@/app/_schemas/form";
+import { PostFormSchema } from "@/app/_schemas/form";
 
 export default function Page() {
   const [postData, setPostData] = useState<PostModel | null>(null);
@@ -18,8 +18,8 @@ export default function Page() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<z.infer<typeof PostUpdateFormSchema>>({
-    resolver: zodResolver(PostUpdateFormSchema),
+  } = useForm<z.infer<typeof PostFormSchema>>({
+    resolver: zodResolver(PostFormSchema),
     mode: "onSubmit",
     defaultValues: {
       title: postData?.title,
@@ -44,7 +44,7 @@ export default function Page() {
   if (postData === null) return <span>Loading...</span>;
   if (!postData) return notFound();
 
-  const onSubmitHandle = async (data: z.infer<typeof PostUpdateFormSchema>) => {
+  const onSubmitHandle = async (data: z.infer<typeof PostFormSchema>) => {
     try {
       const body = {
         title: data.title,

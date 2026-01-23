@@ -2,7 +2,7 @@
 
 import PostForm from "@/app/admin/posts/_components/PostForm";
 import { z } from "zod";
-import { PostUpdateFormSchema } from "@/app/_schemas/form";
+import { PostFormSchema } from "@/app/_schemas/form";
 import { useEffect, useState } from "react";
 
 import { PostModel } from "@/app/generated/prisma/models/Post";
@@ -14,7 +14,7 @@ export default function PostUpdate() {
   const [postData, setPostData] = useState<PostModel | null>(null);
 
   const onSubmitHandle = async (
-    data: z.infer<typeof PostUpdateFormSchema>,
+    data: z.infer<typeof PostFormSchema>,
     reset: () => void,
   ): Promise<void> => {
     try {

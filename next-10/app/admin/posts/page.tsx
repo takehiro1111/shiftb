@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import { PostModel } from "@/app/generated/prisma/models/Post";
+import DisplayHeader from "@/app/admin/_components/DisplayHeader";
 import Link from "next/link";
 
 export default async function Page() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/posts`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/posts`, { cache: 'no-store' });
   const { posts } = await res.json();
 
   if (posts === null) return <span>Loading...</span>;
@@ -11,18 +12,10 @@ export default async function Page() {
 
   return (
     <>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">記事一覧</h2>
-        <Link href="/admin/posts/new">
-          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-            新規作成
-          </button>
-        </Link>
-      </div>
-
+      <DisplayHeader title="記事一覧" entity="posts" />
       <div>
         <ul className="w-full">
-          {posts.map((post: PostModel) => {
+          {posts && posts.map((post: PostModel) => {
             return (
               <div key={post.id} className="py-4 border-b border-gray-400">
                 <>

@@ -25,7 +25,7 @@ export function AppSidebar() {
                   <Link href="/admin/posts">記事一覧</Link>
                 </SidebarMenuButton>
                 <SidebarMenuButton asChild>
-                  <Link href="/categories">カテゴリ一覧</Link>
+                  <Link href="/admin/categories">カテゴリ一覧</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
