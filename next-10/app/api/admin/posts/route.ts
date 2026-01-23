@@ -20,7 +20,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const { title, content, thumbnailUrl, postCategories } = await req.json();
-    const posts = await prisma.post.create({
+    const post = await prisma.post.create({
       data: {
         title,
         content,
@@ -29,13 +29,13 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ posts }, { status: 201 });
+    return NextResponse.json({ post }, { status: 201 });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       console.error(`Prisma error: ${e.code} - ${e.message}`);
     }
     return NextResponse.json(
-      { error: "Failed to fetch posts" },
+      { error: "Failed to fetch post" },
       { status: 500 },
     );
   }
