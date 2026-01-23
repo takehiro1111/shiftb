@@ -9,6 +9,7 @@ import { type PostFormProps } from "@/app/admin/posts/_components/_types/props";
 export default function PostForm({
   title,
   onSubmitHandle,
+  onSubmitDeleteHandle,
   showDeleteButton,
   post,
   mode,
@@ -94,7 +95,7 @@ export default function PostForm({
         <div className="flex gap-5 pl-36">
           <button
             type="submit"
-            className="bg-black text-white font-bold px-4 py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="bg-black text-white font-bold px-4 py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-green-200"
             disabled={isSubmitting}
           >
             {showDeleteButton ? "更新" : "作成"}
@@ -102,8 +103,8 @@ export default function PostForm({
           {showDeleteButton && (
             <button
               type="button"
-              onClick={() => reset()}
-              className="bg-gray-300 text-black font-bold px-4 py-2 rounded disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"
+              onClick={() => onSubmitDeleteHandle?.(reset)}
+              className="bg-gray-300 text-black font-bold px-4 py-2 rounded disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed hover:bg-red-200"
               disabled={isSubmitting}
             >
               削除

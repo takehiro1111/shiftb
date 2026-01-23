@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import PostForm from "@/app/admin/posts/_components/PostForm";
 import { z } from "zod";
@@ -10,7 +10,7 @@ import { useParams, useRouter } from "next/navigation";
 
 export default function PostUpdate() {
   const { id } = useParams();
-  const router = useRouter()
+  const router = useRouter();
   const [postData, setPostData] = useState<PostModel | null>(null);
 
   const onSubmitHandle = async (
@@ -32,7 +32,21 @@ export default function PostUpdate() {
 
       alert("更新しました。");
       reset();
-      router.push("/admin/posts")
+      router.push("/admin/posts");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onSubmitDeleteHandle = async (reset: () => void): Promise<void> => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/posts/${id}`, {
+        method: "DELETE",
+      });
+
+      alert("削除しました。");
+      reset();
+      router.push("/admin/posts");
     } catch (e) {
       console.log(e);
     }
@@ -56,8 +70,9 @@ export default function PostUpdate() {
     <PostForm
       title="記事編集"
       onSubmitHandle={onSubmitHandle}
+      onSubmitDeleteHandle={onSubmitDeleteHandle}
       showDeleteButton={true}
-      post={postData} 
+      post={postData}
       mode="onSubmit"
     />
   );

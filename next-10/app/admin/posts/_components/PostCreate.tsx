@@ -6,7 +6,7 @@ import { PostUpdateFormSchema } from "@/app/_schemas/form";
 import { useRouter } from "next/navigation";
 
 export default function PostCreate() {
-  const router = useRouter();
+  const router = useRouter()
 
   const onSubmitHandle = async (
     data: z.infer<typeof PostUpdateFormSchema>,
@@ -27,7 +27,7 @@ export default function PostCreate() {
 
       alert("作成しました。");
       reset();
-      router.push("/admin/posts");
+      router.push("/admin/posts")
     } catch (e) {
       console.log(e);
     }

@@ -8,6 +8,8 @@ export type PostFormProps = {
     data: z.infer<typeof PostUpdateFormSchema>,
     reset: () => void,
   ) => Promise<void>;
+
+  onSubmitDeleteHandle?: (reset: () => void) => Promise<void>;
   showDeleteButton: boolean;
   post?: PostModel;
   mode?: "onBlur" | "onChange" | "onSubmit" | "onTouched" | "all" | undefined;
