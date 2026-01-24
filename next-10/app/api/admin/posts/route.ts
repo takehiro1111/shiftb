@@ -19,13 +19,15 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { title, content, thumbnailUrl, postCategories } = await req.json();
+    const { title, content, thumbnailUrl, categoryId } = await req.json();
     const post = await prisma.post.create({
       data: {
         title,
         content,
         thumbnailUrl,
-        postCategories,
+        postCategories: {
+          create: { categoryId },
+        },
       },
     });
 

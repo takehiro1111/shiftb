@@ -10,11 +10,9 @@ export const PostFormSchema = z.object({
     .string()
     .max(10000, { message: "内容は10,000文字以内で入力してください" }),
 
-  thumbnailUrl: z
-    .string()
-    .nonempty({ message: "リンクを入力してください" }),
+  thumbnailUrl: z.string().nonempty({ message: "リンクを入力してください" }),
+  categoryId: z.coerce.number().min(1, { message: "カテゴリを選択してください" }),
 });
-
 
 export const CategoryFormSchema = z.object({
   name: z

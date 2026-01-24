@@ -22,6 +22,7 @@ export default function Page() {
         title: data.title,
         content: data.content,
         thumbnailUrl: data.thumbnailUrl,
+        categoryId: data.categoryId,
       };
 
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/posts/${id}`, {
@@ -71,9 +72,9 @@ export default function Page() {
       title="記事編集"
       onSubmitHandle={onSubmitHandle}
       onSubmitDeleteHandle={onSubmitDeleteHandle}
-      showDeleteButton={true}
       post={postData}
       mode="onSubmit"
+      isCreated={false}
     />
   );
 }

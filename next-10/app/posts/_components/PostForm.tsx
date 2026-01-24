@@ -1,63 +1,57 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { notFound } from "next/navigation";
-import { useParams } from "next/navigation";
 import { useForm, Resolver } from "react-hook-form";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PostFormSchema } from "@/app/_schemas/form";
+import { type PostFormProps } from "@/app/posts/_components/_types/props";
 import { useCategories } from "@/app/admin/posts/_hooks/useCategories";
-import {
-  type FormData,
-  type PostWithCategories,
-} from "@/app/posts/[id]/_types/form";
+import { useEffect } from "react";
 
-export default function Page() {
-  const [postData, setPostData] = useState<PostWithCategories | null>(null);
-  const { id } = useParams();
-  const { categories, isLoading } = useCategories();
+type FormData = z.infer<typeof PostFormSchema>;
 
+export default function PostForm({
+  title,
+  onSubmitHandle,
+  isCreated,
+  post,
+  mode,
+}: PostFormProps) {
   const {
     register,
-    formState: { errors, isSubmitting },
+    handleSubmit,
     reset,
+    formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(PostFormSchema) as Resolver<FormData>,
+    mode: mode ?? "onSubmit",
     defaultValues: {
-      title: postData?.title,
-      content: postData?.content,
-      thumbnailUrl: postData?.thumbnailUrl,
-      categoryId: postData?.postCategories?.[0]?.categoryId,
+      title: post?.title,
+      content: post?.content,
+      thumbnailUrl: post?.thumbnailUrl,
+      categoryId: post?.postCategories?.[0]?.categoryId,
     },
   });
+  const { categories, isLoading } = useCategories();
 
   useEffect(() => {
-    const fetcher = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/posts/${id}`,
-      );
-      const { post } = await res.json();
-      setPostData(post);
-
+    if (!isLoading && post) {
       reset({
-        title: post?.title,
-        content: post?.content,
-        thumbnailUrl: post?.thumbnailUrl,
-        categoryId: post?.postCategories?.[0]?.categoryId,
+        title: post.title,
+        content: post.content,
+        thumbnailUrl: post.thumbnailUrl,
+        categoryId: post.postCategories?.[0]?.categoryId,
       });
-    };
-
-    fetcher();
-  }, [isLoading, reset, id]);
-
-  if (!id) return <p>記事IDが指定されていません。</p>;
-  if (postData === null) return <span>Loading...</span>;
-  if (!postData) return notFound();
+    }
+  }, [isLoading, post, reset]);
 
   return (
     <>
-      <h2 className="text-2xl font-bold">記事詳細</h2>
-      <form className="w-full space-y-4 px-4">
+      <h2 className="text-2xl font-bold">{title}</h2>
+      <form
+        onSubmit={handleSubmit((data) => onSubmitHandle(data, reset))}
+        className="w-full space-y-4 px-4"
+      >
         <div className="flex items-center gap-4">
           <label htmlFor="title" className="w-32">
             タイトル
@@ -116,13 +110,29 @@ export default function Page() {
               "flex-1 border border-gray-300 rounded px-3 py-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
             }
           >
+            {isCreated && <option value="">選択してください</option>}
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>
             ))}
           </select>
+          {errors.categoryId && (
+            <span className="text-red-500">{errors.categoryId.message}</span>
+          )}
         </div>
+
+        {isCreated && (
+          <div className="flex gap-5 pl-36">
+            <button
+              type="submit"
+              className="bg-blue-600 text-white font-bold px-4 py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-blue-700"
+              disabled={isSubmitting}
+            >
+              作成
+            </button>
+          </div>
+        )}
       </form>
     </>
   );

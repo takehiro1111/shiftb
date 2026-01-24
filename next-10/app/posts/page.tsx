@@ -13,7 +13,7 @@ export default async function PostPage() {
     <>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">記事一覧</h2>
-        <Link href="/admin/posts/new">
+        <Link href="/posts/new">
           <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
             新規作成
           </button>

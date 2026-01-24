@@ -1,6 +1,6 @@
 "use client";
 
-import PostForm from "@/app/admin/posts/_components/PostForm";
+import PostForm from "@/app/posts/_components/PostForm";
 import { z } from "zod";
 import { PostFormSchema } from "@/app/_schemas/form";
 import { useRouter } from "next/navigation";
@@ -20,7 +20,7 @@ export default function Page() {
         categoryId: data.categoryId,
       };
 
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/posts`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -28,7 +28,7 @@ export default function Page() {
 
       alert("作成しました。");
       reset();
-      router.push("/admin/posts");
+      router.push("/posts");
     } catch (e) {
       console.log(e);
     }

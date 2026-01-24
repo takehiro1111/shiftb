@@ -20,7 +20,10 @@ export async function GET(
       return NextResponse.json({ error: "bad request" }, { status: 400 });
     }
 
-    const post = await prisma.post.findUnique({ where: { id: Number(id) } });
+    const post = await prisma.post.findUnique({
+      where: { id: Number(id) },
+      include: { postCategories: true },
+    });
     return NextResponse.json({ post }, { status: 200 });
   } catch (e) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
@@ -49,7 +52,7 @@ export async function PUT(
       return NextResponse.json({ error: "bad request" }, { status: 400 });
     }
 
-    const { title, content, thumbnailUrl, postCategories } = await req.json();
+    const { title, content, thumbnailUrl, categoryId } = await req.json();
     const post = await prisma.post.update({
       where: {
         id: Number(id),
@@ -58,7 +61,9 @@ export async function PUT(
         title,
         content,
         thumbnailUrl,
-        postCategories,
+        postCategories: {
+          create: { categoryId },
+        },
       },
     });
 

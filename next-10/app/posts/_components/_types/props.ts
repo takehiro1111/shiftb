@@ -12,9 +12,7 @@ export type PostFormProps = {
     data: z.infer<typeof PostFormSchema>,
     reset: () => void,
   ) => Promise<void>;
-
-  onSubmitDeleteHandle?: (reset: () => void) => Promise<void>;
+  isCreated: boolean;
   post?: PostWithCategories;
   mode?: "onBlur" | "onChange" | "onSubmit" | "onTouched" | "all" | undefined;
-  isCreated: boolean
 };
