@@ -1,0 +1,16 @@
+"use client";
+
+import Link from "next/link";
+
+export function Header() {
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 flex justify-between gap-4 p-4 bg-gray-800">
+      <Link href="/admin/posts" className="text-white hover:text-gray-300">
+        Blog
+      </Link>
+      <Link href="/contact" className="text-white hover:text-gray-300 ">
+        お問い合わせ
+      </Link>
+    </header>
+  );
+}
