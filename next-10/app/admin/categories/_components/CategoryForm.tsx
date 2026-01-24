@@ -56,7 +56,7 @@ export default function CategoryForm({
         <div className="flex gap-5 mt-4">
           <button
             type="submit"
-            className="bg-black text-white font-bold px-4 py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-green-200"
+            className="bg-blue-600 text-white font-bold px-4 py-2 rounded disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-blue-700"
             disabled={isSubmitting}
           >
             {showDeleteButton ? "更新" : "作成"}
@@ -65,7 +65,7 @@ export default function CategoryForm({
             <button
               type="button"
               onClick={() => onSubmitDeleteHandle?.(reset)}
-              className="bg-gray-300 text-black font-bold px-4 py-2 rounded disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed hover:bg-red-200"
+              className="bg-red-400 text-black font-bold px-4 py-2 rounded disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed hover:bg-red-700"
               disabled={isSubmitting}
             >
               削除
