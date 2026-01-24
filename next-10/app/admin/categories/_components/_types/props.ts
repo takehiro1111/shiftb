@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CategoryFormSchema } from "@/app/_schemas/form";
-import { CategoryModel } from "@/app/generated/prisma/models/Category";
+import { Category } from "@/app/_types/categories";
 
 export type CategoryFormProps = {
   title: "カテゴリー作成" | "カテゴリー編集";
@@ -11,6 +11,6 @@ export type CategoryFormProps = {
 
   onSubmitDeleteHandle?: (reset: () => void) => Promise<void>;
   showDeleteButton: boolean;
-  category?: CategoryModel;
-  mode?: "onBlur" | "onChange" | "onSubmit" | "onTouched" | "all" | undefined;
+  category?: Category;
+  validationMode?: "onBlur" | "onChange" | "onSubmit" | "onTouched" | "all" | undefined;
 };

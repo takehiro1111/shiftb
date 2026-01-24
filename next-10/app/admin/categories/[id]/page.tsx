@@ -5,24 +5,28 @@ import { z } from "zod";
 import { CategoryFormSchema } from "@/app/_schemas/form";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CategoryModel } from "@/app/generated/prisma/models/Category";
 import { useParams } from "next/navigation";
+import {
+  UpdateCategoryRequest,
+  GetCategoryResponse,
+  Category,
+} from "@/app/_types/categories";
 
 export default function Page() {
   const router = useRouter();
   const { id } = useParams();
-  const [categoryData, setCategoryData] = useState<CategoryModel | null>(null);
+  const [categoryData, setCategoryData] = useState<Category | null>(null);
 
   const onSubmitHandle = async (
     data: z.infer<typeof CategoryFormSchema>,
     reset: () => void,
   ): Promise<void> => {
     try {
-      const body = {
+      const body: UpdateCategoryRequest = {
         name: data.name,
       };
 
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/categories/${id}`, {
+      await fetch(`/api/admin/categories/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -30,7 +34,7 @@ export default function Page() {
 
       alert("更新しました。");
       reset();
-      router.push("/admin/categories");
+      router.replace("/admin/categories");
     } catch (e) {
       console.log(e);
     }
@@ -38,28 +42,26 @@ export default function Page() {
 
   const onSubmitDeleteHandle = async (reset: () => void): Promise<void> => {
     try {
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/admin/categories/${id}`,
-        {
+      await fetch(`/api/admin/categories/${id}`, {
           method: "DELETE",
         },
       );
 
       alert("削除しました。");
       reset();
-      router.push("/admin/categories");
+      router.replace("/admin/categories");
     } catch (e) {
       console.log(e);
     }
   };
 
   useEffect(() => {
+    if (!id) return;
+
     const fetcher = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/admin/categories/${id}`,
-      );
-      const { category } = await res.json();
-      setCategoryData(category);
+      const res = await fetch(`/api/admin/categories/${id}`);
+      const data: GetCategoryResponse = await res.json();
+      setCategoryData(data.category);
     };
 
     fetcher();
@@ -74,7 +76,7 @@ export default function Page() {
       onSubmitDeleteHandle={onSubmitDeleteHandle}
       showDeleteButton={true}
       category={categoryData}
-      mode="onSubmit"
+      validationMode="onSubmit"
     />
   );
 }

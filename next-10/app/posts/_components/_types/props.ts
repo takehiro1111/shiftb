@@ -7,12 +7,18 @@ type PostWithCategories = PostModel & {
 };
 
 export type PostFormProps = {
-  title: "記事作成" | "記事編集" | "記事詳細";
-  onSubmitHandle: (
+  title: "記事作成" | "記事詳細";
+  onSubmitHandle?: (
     data: z.infer<typeof PostFormSchema>,
     reset: () => void,
   ) => Promise<void>;
   isCreated: boolean;
   post?: PostWithCategories;
-  mode?: "onBlur" | "onChange" | "onSubmit" | "onTouched" | "all" | undefined;
+  validationMode?:
+    | "onBlur"
+    | "onChange"
+    | "onSubmit"
+    | "onTouched"
+    | "all"
+    | undefined;
 };

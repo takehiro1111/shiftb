@@ -62,6 +62,7 @@ export async function PUT(
         content,
         thumbnailUrl,
         postCategories: {
+          deleteMany: {},
           create: { categoryId },
         },
       },

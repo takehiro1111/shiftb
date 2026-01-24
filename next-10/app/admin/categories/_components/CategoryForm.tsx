@@ -12,7 +12,7 @@ export default function CategoryForm({
   onSubmitDeleteHandle,
   showDeleteButton,
   category,
-  mode,
+  validationMode,
 }: CategoryFormProps) {
   const {
     register,
@@ -21,7 +21,7 @@ export default function CategoryForm({
     formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof CategoryFormSchema>>({
     resolver: zodResolver(CategoryFormSchema),
-    mode: mode ?? "onSubmit",
+    mode: validationMode ?? "onSubmit",
     defaultValues: {
       name: category?.name,
     },

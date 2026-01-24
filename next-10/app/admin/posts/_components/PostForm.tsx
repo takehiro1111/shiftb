@@ -15,7 +15,7 @@ export default function PostForm({
   onSubmitHandle,
   onSubmitDeleteHandle,
   post,
-  mode,
+  validationMode,
   isCreated,
 }: PostFormProps) {
   const {
@@ -25,7 +25,7 @@ export default function PostForm({
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(PostFormSchema) as Resolver<FormData>,
-    mode: mode ?? "onSubmit",
+    mode: validationMode ?? "onSubmit",
     defaultValues: {
       title: post?.title,
       content: post?.content,

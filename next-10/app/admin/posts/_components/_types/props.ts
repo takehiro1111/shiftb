@@ -1,10 +1,6 @@
 import { z } from "zod";
 import { PostFormSchema } from "@/app/_schemas/form";
-import { PostModel } from "@/app/generated/prisma/models/Post";
-
-type PostWithCategories = PostModel & {
-  postCategories?: { categoryId: number }[];
-};
+import { PostWithCategories } from "@/app/_types/posts";
 
 export type PostFormProps = {
   title: "記事作成" | "記事編集" | "記事詳細";
@@ -15,6 +11,6 @@ export type PostFormProps = {
 
   onSubmitDeleteHandle?: (reset: () => void) => Promise<void>;
   post?: PostWithCategories;
-  mode?: "onBlur" | "onChange" | "onSubmit" | "onTouched" | "all" | undefined;
+  validationMode?: "onBlur" | "onChange" | "onSubmit" | "onTouched" | "all" | undefined;
   isCreated: boolean
 };

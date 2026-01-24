@@ -4,6 +4,7 @@ import CategoryForm from "@/app/admin/categories/_components/CategoryForm";
 import { z } from "zod";
 import { CategoryFormSchema } from "@/app/_schemas/form";
 import { useRouter } from "next/navigation";
+import { CreateCategoryRequest } from "@/app/_types/categories";
 
 export default function Page() {
   const router = useRouter();
@@ -13,11 +14,11 @@ export default function Page() {
     reset: () => void,
   ): Promise<void> => {
     try {
-      const body = {
+      const body: CreateCategoryRequest = {
         name: data.name,
       };
 
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/categories`, {
+      await fetch("/api/admin/categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -25,7 +26,7 @@ export default function Page() {
 
       alert("作成しました。");
       reset();
-      router.push("/admin/categories");
+      router.replace("/admin/categories");
     } catch (e) {
       console.log(e);
     }
@@ -36,7 +37,7 @@ export default function Page() {
       title="カテゴリー作成"
       onSubmitHandle={onSubmitHandle}
       showDeleteButton={false}
-      mode="onSubmit"
+      validationMode="onSubmit"
     />
   );
 }

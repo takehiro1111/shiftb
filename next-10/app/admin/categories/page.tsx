@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CategoryModel } from "@/app/generated/prisma/models/Category";
-import DisplayHeader from "@/app/admin/_components/DisplayHeader";
+import DisplayHeader from "@/app/_components/DisplayHeader";
 import Link from "next/link";
 
 export default function Page() {
@@ -12,7 +12,7 @@ export default function Page() {
   useEffect(() => {
     const fetcher = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/categories`);
+        const res = await fetch("/api/admin/categories");
         const { categories } = await res.json();
         setCategories(categories);
       } catch (e) {
@@ -34,7 +34,10 @@ export default function Page() {
           {categories.map((category: CategoryModel) => {
             return (
               <div key={category.id} className="py-4 border-b border-gray-400">
-                <Link href={`/admin/categories/${category.id}`} className="font-bold">
+                <Link
+                  href={`/admin/categories/${category.id}`}
+                  className="font-bold"
+                >
                   {category.name}
                 </Link>
                 <p className="text-sm text-gray-500">

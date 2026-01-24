@@ -15,7 +15,7 @@ export default function PostForm({
   onSubmitHandle,
   isCreated,
   post,
-  mode,
+  validationMode,
 }: PostFormProps) {
   const {
     register,
@@ -24,7 +24,7 @@ export default function PostForm({
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(PostFormSchema) as Resolver<FormData>,
-    mode: mode ?? "onSubmit",
+    mode: validationMode ?? "onSubmit",
     defaultValues: {
       title: post?.title,
       content: post?.content,
@@ -49,7 +49,9 @@ export default function PostForm({
     <>
       <h2 className="text-2xl font-bold">{title}</h2>
       <form
-        onSubmit={handleSubmit((data) => onSubmitHandle(data, reset))}
+        onSubmit={
+          onSubmitHandle && handleSubmit((data) => onSubmitHandle(data, reset))
+        }
         className="w-full space-y-4 px-4"
       >
         <div className="flex items-center gap-4">
@@ -61,7 +63,7 @@ export default function PostForm({
             id="title"
             {...register("title")}
             className="flex-1 border border-gray-300 rounded px-3 py-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
-            disabled={isSubmitting}
+            disabled={!isCreated || isSubmitting}
           />
           {errors.title && (
             <span className="text-red-500">{errors.title.message}</span>
@@ -77,7 +79,7 @@ export default function PostForm({
             rows={10}
             {...register("content")}
             className="flex-1 border border-gray-300 rounded px-3 py-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
-            disabled={isSubmitting}
+            disabled={!isCreated || isSubmitting}
           />
           {errors.content && (
             <span className="text-red-500">{errors.content.message}</span>
@@ -93,7 +95,7 @@ export default function PostForm({
             id="thumbnailUrl"
             {...register("thumbnailUrl")}
             className="flex-1 border border-gray-300 rounded px-3 py-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
-            disabled={isSubmitting}
+            disabled={!isCreated || isSubmitting}
           />
           {errors.thumbnailUrl && (
             <span className="text-red-500">{errors.thumbnailUrl.message}</span>
@@ -105,7 +107,7 @@ export default function PostForm({
           </label>
           <select
             {...register("categoryId", { valueAsNumber: true })}
-            disabled={isLoading || isSubmitting}
+            disabled={!isCreated || isLoading || isSubmitting}
             className={
               "flex-1 border border-gray-300 rounded px-3 py-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
             }

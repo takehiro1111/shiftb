@@ -5,27 +5,31 @@ import { z } from "zod";
 import { PostFormSchema } from "@/app/_schemas/form";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { PostModel } from "@/app/generated/prisma/models/Post";
 import { useParams } from "next/navigation";
+import {
+  UpdatePostRequest,
+  GetPostResponse,
+  PostWithCategories,
+} from "@/app/_types/posts";
 
 export default function Page() {
   const router = useRouter();
   const { id } = useParams();
-  const [postData, setPostData] = useState<PostModel | null>(null);
+  const [postData, setPostData] = useState<PostWithCategories | null>(null);
 
   const onSubmitHandle = async (
     data: z.infer<typeof PostFormSchema>,
     reset: () => void,
   ): Promise<void> => {
     try {
-      const body = {
+      const body: UpdatePostRequest = {
         title: data.title,
         content: data.content,
         thumbnailUrl: data.thumbnailUrl,
         categoryId: data.categoryId,
       };
 
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/posts/${id}`, {
+      await fetch(`/api/admin/posts/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -33,7 +37,7 @@ export default function Page() {
 
       alert("更新しました。");
       reset();
-      router.push("/admin/posts");
+      router.replace("/admin/posts");
     } catch (e) {
       console.log(e);
     }
@@ -41,25 +45,25 @@ export default function Page() {
 
   const onSubmitDeleteHandle = async (reset: () => void): Promise<void> => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/posts/${id}`, {
+      await fetch(`/api/admin/posts/${id}`, {
         method: "DELETE",
       });
 
       alert("削除しました。");
       reset();
-      router.push("/admin/posts");
+      router.replace("/admin/posts");
     } catch (e) {
       console.log(e);
     }
   };
 
   useEffect(() => {
+    if (!id) return;
+
     const fetcher = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/admin/posts/${id}`,
-      );
-      const { post } = await res.json();
-      setPostData(post);
+      const res = await fetch(`/api/admin/posts/${id}`);
+      const data: GetPostResponse = await res.json();
+      setPostData(data.post);
     };
 
     fetcher();
@@ -73,7 +77,7 @@ export default function Page() {
       onSubmitHandle={onSubmitHandle}
       onSubmitDeleteHandle={onSubmitDeleteHandle}
       post={postData}
-      mode="onSubmit"
+      validationMode="onSubmit"
       isCreated={false}
     />
   );

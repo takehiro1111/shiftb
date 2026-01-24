@@ -1,11 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-type Category = {
-  id: number;
-  name: string;
-};
+import { Category, GetCategoriesResponse } from "@/app/_types/categories";
 
 export function useCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -15,11 +11,9 @@ export function useCategories() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/admin/categories`
-        );
-        const { categories } = await res.json();
-        setCategories(categories ?? []);
+        const res = await fetch("/api/admin/categories");
+        const data: GetCategoriesResponse = await res.json();
+        setCategories(data.categories ?? []);
       } catch (e) {
         setError(e instanceof Error ? e : new Error("Failed to fetch categories"));
       } finally {

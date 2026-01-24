@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { PostModel } from "@/app/generated/prisma/models/Post";
-import DisplayHeader from "@/app/admin/_components/DisplayHeader";
+import DisplayHeader from "@/app/_components/DisplayHeader";
 import Link from "next/link";
 
 export default function Page() {
@@ -12,7 +12,7 @@ export default function Page() {
   useEffect(() => {
     const fetcher = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/posts`);
+        const res = await fetch("/api/admin/posts");
         const { posts } = await res.json();
         setPosts(posts);
       } catch (e) {

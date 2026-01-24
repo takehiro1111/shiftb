@@ -1,129 +1,27 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { notFound } from "next/navigation";
 import { useParams } from "next/navigation";
-import { useForm, Resolver } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { PostFormSchema } from "@/app/_schemas/form";
-import { useCategories } from "@/app/admin/posts/_hooks/useCategories";
-import {
-  type FormData,
-  type PostWithCategories,
-} from "@/app/posts/[id]/_types/form";
+import { type PostWithCategories } from "@/app/posts/[id]/_types/form";
+import PostForm from "@/app/posts/_components/PostForm";
 
 export default function Page() {
   const [postData, setPostData] = useState<PostWithCategories | null>(null);
   const { id } = useParams();
-  const { categories, isLoading } = useCategories();
-
-  const {
-    register,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm<FormData>({
-    resolver: zodResolver(PostFormSchema) as Resolver<FormData>,
-    defaultValues: {
-      title: postData?.title,
-      content: postData?.content,
-      thumbnailUrl: postData?.thumbnailUrl,
-      categoryId: postData?.postCategories?.[0]?.categoryId,
-    },
-  });
 
   useEffect(() => {
+    if (!id) return;
+
     const fetcher = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/posts/${id}`,
-      );
+      const res = await fetch(`/api/posts/${id}`);
       const { post } = await res.json();
       setPostData(post);
-
-      reset({
-        title: post?.title,
-        content: post?.content,
-        thumbnailUrl: post?.thumbnailUrl,
-        categoryId: post?.postCategories?.[0]?.categoryId,
-      });
     };
 
     fetcher();
-  }, [isLoading, reset, id]);
+  }, [id]);
 
-  if (!id) return <p>記事IDが指定されていません。</p>;
   if (postData === null) return <span>Loading...</span>;
-  if (!postData) return notFound();
 
-  return (
-    <>
-      <h2 className="text-2xl font-bold">記事詳細</h2>
-      <form className="w-full space-y-4 px-4">
-        <div className="flex items-center gap-4">
-          <label htmlFor="title" className="w-32">
-            タイトル
-          </label>
-          <input
-            type="text"
-            id="title"
-            {...register("title")}
-            className="flex-1 border border-gray-300 rounded px-3 py-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
-            disabled={isSubmitting}
-          />
-          {errors.title && (
-            <span className="text-red-500">{errors.title.message}</span>
-          )}
-        </div>
-
-        <div className="flex items-center gap-4">
-          <label htmlFor="content" className="w-32">
-            内容
-          </label>
-          <textarea
-            id="content"
-            rows={10}
-            {...register("content")}
-            className="flex-1 border border-gray-300 rounded px-3 py-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
-            disabled={isSubmitting}
-          />
-          {errors.content && (
-            <span className="text-red-500">{errors.content.message}</span>
-          )}
-        </div>
-
-        <div className="flex items-center gap-4">
-          <label htmlFor="thumbnailUrl" className="w-32">
-            サムネイルURL
-          </label>
-          <input
-            type="text"
-            id="thumbnailUrl"
-            {...register("thumbnailUrl")}
-            className="flex-1 border border-gray-300 rounded px-3 py-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
-            disabled={isSubmitting}
-          />
-          {errors.thumbnailUrl && (
-            <span className="text-red-500">{errors.thumbnailUrl.message}</span>
-          )}
-        </div>
-        <div className="flex items-center gap-4">
-          <label htmlFor="categoryId" className="w-32">
-            カテゴリー
-          </label>
-          <select
-            {...register("categoryId", { valueAsNumber: true })}
-            disabled={isLoading || isSubmitting}
-            className={
-              "flex-1 border border-gray-300 rounded px-3 py-2 disabled:bg-gray-100 disabled:cursor-not-allowed"
-            }
-          >
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </form>
-    </>
-  );
+  return <PostForm title="記事詳細" isCreated={false} post={postData} />;
 }

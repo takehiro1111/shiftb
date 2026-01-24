@@ -20,7 +20,7 @@ export default function Page() {
         categoryId: data.categoryId,
       };
 
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`, {
+      await fetch("/api/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -28,7 +28,7 @@ export default function Page() {
 
       alert("作成しました。");
       reset();
-      router.push("/posts");
+      router.replace("/posts");
     } catch (e) {
       console.log(e);
     }
@@ -38,7 +38,7 @@ export default function Page() {
     <PostForm
       title="記事作成"
       onSubmitHandle={onSubmitHandle}
-      mode="onSubmit"
+      validationMode="onSubmit"
       isCreated={true}
     />
   );
