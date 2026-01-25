@@ -3,7 +3,7 @@ CREATE TABLE "Post" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
-    "thumbnail_url" TEXT NOT NULL,
+    "thumbnail_image_key" TEXT NOT NULL,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL
 );

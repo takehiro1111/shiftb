@@ -1,9 +1,9 @@
 "use client";
 
-import { PostModel } from "@/app/generated/prisma/models/Post";
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import { PostModel } from "@/app/generated/prisma/models/Post";
 import DisplayHeader from "@/app/_components/DisplayHeader";
+import Link from "next/link";
 
 export default function Page() {
   const [publicPosts, setPublicPostsPosts] = useState<PostModel[] | null>(null);
@@ -31,18 +31,19 @@ export default function Page() {
       <DisplayHeader title="記事一覧" entity="posts" />
       <div>
         <ul className="w-full">
-          {publicPosts.map((post: PostModel) => {
-            return (
-              <div key={post.id} className="py-4 border-b border-gray-400">
-                <Link href={`/posts/${post.id}`} className="font-bold">
-                  {post.title}
-                </Link>
-                <p className="text-sm text-gray-500">
-                  {new Date(post.updatedAt).toLocaleDateString()}
-                </p>
-              </div>
-            );
-          })}
+          {publicPosts &&
+            publicPosts.map((post: PostModel) => {
+              return (
+                <div key={post.id} className="py-4 border-b border-gray-400">
+                  <Link href={`/posts/${post.id}`} className="font-bold">
+                    {post.title}
+                  </Link>
+                  <p className="text-sm text-gray-500">
+                    {new Date(post.updatedAt).toLocaleDateString()}
+                  </p>
+                </div>
+              );
+            })}
         </ul>
       </div>
     </>

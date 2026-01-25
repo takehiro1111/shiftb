@@ -1,17 +1,23 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/_libs/prisma";
 import { Prisma } from "@/app/generated/prisma/client";
+import { supabase } from "@/app/_libs/supabase";
 
 type Params = Promise<{ id: string }>;
 
 export async function GET(
-  _req: Request,
+  req: Request,
   {
     params,
   }: {
     params: Params;
   },
 ) {
+  const token = req.headers.get("Authorization") ?? "";
+  const { error } = await supabase.auth.getUser(token);
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 });
+
   try {
     const { id } = await params;
     const hasNumInt = parseInt(id);
@@ -44,6 +50,11 @@ export async function PUT(
     params: Params;
   },
 ) {
+  const token = req.headers.get("Authorization") ?? "";
+  const { error } = await supabase.auth.getUser(token);
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 });
+
   try {
     const { id } = await params;
     const hasNumInt = parseInt(id);
@@ -52,7 +63,7 @@ export async function PUT(
       return NextResponse.json({ error: "bad request" }, { status: 400 });
     }
 
-    const { title, content, thumbnailUrl, categoryId } = await req.json();
+    const { title, content, thumbnailImageKey, categoryId } = await req.json();
     const post = await prisma.post.update({
       where: {
         id: Number(id),
@@ -60,7 +71,7 @@ export async function PUT(
       data: {
         title,
         content,
-        thumbnailUrl,
+        thumbnailImageKey,
         postCategories: {
           deleteMany: {},
           create: { categoryId },
@@ -81,13 +92,18 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _req: Request,
+  req: Request,
   {
     params,
   }: {
     params: Params;
   },
 ) {
+  const token = req.headers.get("Authorization") ?? "";
+  const { error } = await supabase.auth.getUser(token);
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 });
+
   try {
     const { id } = await params;
     const hasNumInt = parseInt(id);

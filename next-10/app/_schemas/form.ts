@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-export const PostFormSchema = z.object({
+// 共通フィールド
+const basePostFields = {
   title: z
     .string()
     .max(50, { message: "タイトルは50文字以内で入力してください" })
@@ -10,8 +11,27 @@ export const PostFormSchema = z.object({
     .string()
     .max(10000, { message: "内容は10,000文字以内で入力してください" }),
 
-  thumbnailUrl: z.string().nonempty({ message: "リンクを入力してください" }),
-  categoryId: z.coerce.number().min(1, { message: "カテゴリを選択してください" }),
+  categoryId: z.coerce
+    .number()
+    .min(1, { message: "カテゴリを選択してください" }),
+};
+
+// admin 用（ファイルアップロード）
+export const AdminPostFormSchema = z.object({
+  ...basePostFields,
+  thumbnailImageKey: z
+    .custom<FileList>()
+    .refine((files) => files && files.length > 0, {
+      message: "画像をアップロードしてください",
+    }),
+});
+
+// 公開用（URL 文字列）
+export const PostFormSchema = z.object({
+  ...basePostFields,
+  thumbnailImageKey: z
+    .string()
+    .nonempty({ message: "画像をアップロードしてください" }),
 });
 
 export const CategoryFormSchema = z.object({

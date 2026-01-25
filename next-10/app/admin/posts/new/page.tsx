@@ -1,8 +1,7 @@
 "use client";
 
 import PostForm from "@/app/admin/posts/_components/PostForm";
-import { z } from "zod";
-import { PostFormSchema } from "@/app/_schemas/form";
+import { PostFormData } from "@/app/admin/posts/_components/_types/props";
 import { useRouter } from "next/navigation";
 import { CreatePostRequest } from "@/app/_types/posts";
 
@@ -10,14 +9,14 @@ export default function Page() {
   const router = useRouter();
 
   const onSubmitHandle = async (
-    data: z.infer<typeof PostFormSchema>,
+    data: PostFormData,
     reset: () => void,
   ): Promise<void> => {
     try {
       const body: CreatePostRequest = {
         title: data.title,
         content: data.content,
-        thumbnailUrl: data.thumbnailUrl,
+        thumbnailImageKey: data.thumbnailImageKey,
         categoryId: data.categoryId,
       };
 

@@ -42,6 +42,6 @@ next-env.d.ts
 
 /lib/generated/prisma
 **/generated/**
-.vscode
+**/.vscode
 *.db
 *.db-journal

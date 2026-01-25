@@ -2,7 +2,7 @@
 export type CreatePostRequest = {
   title: string;
   content: string;
-  thumbnailUrl: string;
+  thumbnailImageKey: string;
   categoryId: number;
 };
 
@@ -13,7 +13,7 @@ export type Post = {
   id: number;
   title: string;
   content: string;
-  thumbnailUrl: string;
+  thumbnailImageKey: string;
   createdAt: string;
   updatedAt: string;
 };
