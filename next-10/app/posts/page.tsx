@@ -31,19 +31,18 @@ export default function Page() {
       <DisplayHeader title="記事一覧" entity="posts" />
       <div>
         <ul className="w-full">
-          {publicPosts &&
-            publicPosts.map((post: PostModel) => {
-              return (
-                <div key={post.id} className="py-4 border-b border-gray-400">
-                  <Link href={`/posts/${post.id}`} className="font-bold">
-                    {post.title}
-                  </Link>
-                  <p className="text-sm text-gray-500">
-                    {new Date(post.updatedAt).toLocaleDateString()}
-                  </p>
-                </div>
-              );
-            })}
+          {publicPosts.map((post: PostModel) => {
+            return (
+              <div key={post.id} className="py-4 border-b border-gray-400">
+                <Link href={`/posts/${post.id}`} className="font-bold">
+                  {post.title}
+                </Link>
+                <p className="text-sm text-gray-500">
+                  {new Date(post.updatedAt).toLocaleDateString()}
+                </p>
+              </div>
+            );
+          })}
         </ul>
       </div>
     </>

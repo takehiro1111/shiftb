@@ -31,7 +31,7 @@ export default function Page() {
       <DisplayHeader title="カテゴリ一覧" entity="categories" />
       <div>
         <ul className="w-full">
-          {categories && categories.map((category: CategoryModel) => {
+          {categories.map((category: CategoryModel) => {
             return (
               <div key={category.id} className="py-4 border-b border-gray-400">
                 <Link

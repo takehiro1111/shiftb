@@ -40,8 +40,7 @@ export default function Page() {
       <DisplayHeader title="記事一覧" entity="posts" />
       <div>
         <ul className="w-full">
-          {posts &&
-            posts.map((post: PostModel) => {
+          {posts.map((post: PostModel) => {
               return (
                 <div key={post.id} className="py-4 border-b border-gray-400">
                   <Link href={`/admin/posts/${post.id}`} className="font-bold">
