@@ -32,11 +32,11 @@ export const Header: React.FC = () => {
             </>
           ) : (
             <>
-              <Link href="/contact" className="header-link">
-                お問い合わせ
-              </Link>
               <Link href="/auth/signin" className="header-link">
                 ログイン
+              </Link>
+              <Link href="/auth/signup" className="header-link">
+                登録
               </Link>
             </>
           )}

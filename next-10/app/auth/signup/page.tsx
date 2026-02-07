@@ -1,38 +1,49 @@
-'use client'
+"use client";
 
-import { supabase } from '@/app/_libs/supabase'
-import { useState } from 'react'
+import { supabase } from "@/app/_libs/supabase";
+import { SignUpFormSchema } from "@/app/_schemas/form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
 
 export default function Page() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<z.infer<typeof SignUpFormSchema>>({
+    resolver: zodResolver(SignUpFormSchema),
+    mode: "onSubmit",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    setIsSubmitting(true)
-
+  const onSubmitSignUpForm = async (data: z.infer<typeof SignUpFormSchema>) => {
     const { error } = await supabase.auth.signUp({
-      email,
-      password,
+      email: data.email,
+      password: data.password,
       options: {
-        emailRedirectTo: `http://localhost:3000/auth/signin`,
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_API_URL}/auth/signin`,
       },
-    })
+    });
     if (error) {
-      alert('登録に失敗しました')
-    } else {
-      setEmail('')
-      setPassword('')
-      alert('確認メールを送信しました。')
+      alert("登録に失敗しました");
+      console.error(`エラー内容: ${error}`)
+      return;
     }
-    setIsSubmitting(false)
-  }
+    alert("確認メールを送信しました。");
+    reset();
+  };
 
   return (
     <div className="flex justify-center pt-60">
-      <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-100">
+      <form
+        onSubmit={handleSubmit(onSubmitSignUpForm)}
+        className="space-y-4 w-full max-w-100"
+      >
         <div>
           <label
             htmlFor="email"
@@ -42,15 +53,14 @@ export default function Page() {
           </label>
           <input
             type="email"
-            name="email"
             id="email"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            placeholder="name@company.com"
-            required
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
+            {...register("email")}
             disabled={isSubmitting}
           />
+          {errors.email && (
+            <span className="text-red-500">{errors.email.message}</span>
+          )}
         </div>
         <div>
           <label
@@ -61,15 +71,14 @@ export default function Page() {
           </label>
           <input
             type="password"
-            name="password"
             id="password"
-            placeholder="••••••••"
+            {...register("password")}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            required
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
             disabled={isSubmitting}
           />
+          {errors.password && (
+            <span className="text-red-500">{errors.password.message}</span>
+          )}
         </div>
 
         <div>
@@ -83,5 +92,5 @@ export default function Page() {
         </div>
       </form>
     </div>
-  )
+  );
 }

@@ -40,3 +40,29 @@ export const CategoryFormSchema = z.object({
     .max(50, { message: "名前は50文字以内で入力してください" })
     .nonempty({ message: "カテゴリー名を入力してください" }),
 });
+
+export const SignInFormSchema = z.object({
+  email: z
+    .string()
+    .nonempty({ message: "メールアドレスを入力してください。" })
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, {
+      message: "有効なメールアドレスを入力してください",
+    }),
+  password: z
+    .string()
+    .min(6,{ message: "パスワードは最低6文字以上入力してください。" })
+    .max(12,{ message: "パスワードは最大12文字以下で入力してください。" }) 
+});
+
+export const SignUpFormSchema = z.object({
+  email: z
+    .string()
+    .nonempty({ message: "メールアドレスを入力してください。" })
+    .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, {
+      message: "有効なメールアドレスを入力してください",
+    }),
+  password: z
+    .string()
+    .min(6,{ message: "パスワードは最低6文字以上入力してください。" })
+    .max(12,{ message: "パスワードは最大12文字以下で入力してください。" }) 
+});
