@@ -31,7 +31,7 @@ export default function Page() {
     });
     if (error) {
       alert("登録に失敗しました");
-      console.error(`エラー内容: ${error}`)
+      console.error(`エラー内容: ${error}`);
       return;
     }
     alert("確認メールを送信しました。");

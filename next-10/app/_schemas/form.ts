@@ -19,11 +19,7 @@ const basePostFields = {
 // admin 用（ファイルアップロード）
 export const AdminPostFormSchema = z.object({
   ...basePostFields,
-  thumbnailImageKey: z
-    .custom<FileList>()
-    .refine((files) => files && files.length > 0, {
-      message: "画像をアップロードしてください",
-    }),
+  thumbnailImageKey: z.custom<FileList>().optional(),
 });
 
 // 公開用（URL 文字列）
@@ -50,8 +46,8 @@ export const SignInFormSchema = z.object({
     }),
   password: z
     .string()
-    .min(6,{ message: "パスワードは最低6文字以上入力してください。" })
-    .max(12,{ message: "パスワードは最大12文字以下で入力してください。" }) 
+    .min(6, { message: "パスワードは最低6文字以上入力してください。" })
+    .max(12, { message: "パスワードは最大12文字以下で入力してください。" }),
 });
 
 export const SignUpFormSchema = z.object({
@@ -63,6 +59,6 @@ export const SignUpFormSchema = z.object({
     }),
   password: z
     .string()
-    .min(6,{ message: "パスワードは最低6文字以上入力してください。" })
-    .max(12,{ message: "パスワードは最大12文字以下で入力してください。" }) 
+    .min(6, { message: "パスワードは最低6文字以上入力してください。" })
+    .max(12, { message: "パスワードは最大12文字以下で入力してください。" }),
 });

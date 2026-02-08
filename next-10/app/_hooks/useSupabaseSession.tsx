@@ -1,25 +1,16 @@
-import { supabase } from '@/app/_libs/supabase'
-import { Session } from '@supabase/supabase-js'
-import { usePathname } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { supabase } from "@/app/_libs/supabase";
+import { Session } from "@supabase/supabase-js";
+import useSWR from "swr";
 
 export const useSupabaseSession = () => {
-  // undefined: ログイン状態ロード中, null: ログインしていない, Session: ログインしている
-  const [session, setSession] = useState<Session | null | undefined>(undefined)
-  const [token, setToken] = useState<string | null>(null)
-  const pathname = usePathname()
+  const fetcher = async (): Promise<Session | null> => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    return session;
+  };
 
-  useEffect(() => {
-    const fetcher = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession()
-      setSession(session)
-      setToken(session?.access_token || null)
-    }
+  const { data, isLoading } = useSWR<Session | null>("supabase_session", fetcher);
 
-    fetcher()
-  }, [pathname])
-
-  return { session, isLoading: session === undefined, token }
-}
+  return { session: data, isLoading, token: data?.access_token };
+};

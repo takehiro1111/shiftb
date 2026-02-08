@@ -1,37 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { CategoryModel } from "@/app/generated/prisma/models/Category";
 import DisplayHeader from "@/app/_components/DisplayHeader";
 import Link from "next/link";
+import useSWR from "swr";
 
 export default function Page() {
-  const [categories, setCategories] = useState<CategoryModel[] | null>(null);
-  const [error, setError] = useState(false);
+  const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-  useEffect(() => {
-    const fetcher = async () => {
-      try {
-        const res = await fetch("/api/admin/categories");
-        const { categories } = await res.json();
-        setCategories(categories);
-      } catch (e) {
-        console.error(e);
-        setError(true);
-      }
-    };
-    fetcher();
-  }, []);
+  const { data, error, isLoading } = useSWR("/api/admin/categories", fetcher);
 
-  if (error) return <span>エラーが発生しました</span>;
-  if (categories === null) return <span>Loading...</span>;
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <>
       <DisplayHeader title="カテゴリ一覧" entity="categories" />
       <div>
         <ul className="w-full">
-          {categories.map((category: CategoryModel) => {
+          {data.categories?.map((category: CategoryModel) => {
             return (
               <div key={category.id} className="py-4 border-b border-gray-400">
                 <Link
@@ -43,6 +29,7 @@ export default function Page() {
                 <p className="text-sm text-gray-500">
                   {new Date(category.updatedAt).toLocaleDateString()}
                 </p>
+                {error && <p>エラーが発生しました</p>}
               </div>
             );
           })}

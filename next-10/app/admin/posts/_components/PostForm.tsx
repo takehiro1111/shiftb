@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { supabase } from "@/app/_libs/supabase";
 import { v4 as uuidv4 } from "uuid"; // 固有IDを生成するライブラリ
+import { useSupabaseStorage } from "@/app/_hooks/useSupabaseStorage";
 
 type FormData = z.infer<typeof AdminPostFormSchema>;
 
@@ -50,21 +51,8 @@ export default function PostForm({
     }
   }, [isLoading, post, reset]);
 
-  useEffect(() => {
-    if (!post?.thumbnailImageKey) return;
-
-    const fetcher = async () => {
-      const { data } = await supabase.storage
-        .from("blog-nextjs")
-        .createSignedUrl(post.thumbnailImageKey, 3600); // 1時間有効
-
-      if (data?.signedUrl) {
-        setThumbnailImageUrl(data.signedUrl);
-      }
-    };
-
-    fetcher();
-  }, [post?.thumbnailImageKey]);
+  const { storageData } = useSupabaseStorage(post?.thumbnailImageKey);
+  const imageURL = thumbnailImageUrl || storageData?.signedUrl;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -74,14 +62,14 @@ export default function PostForm({
     }
   };
 
-  const onSubmitWithUpload = async (data: FormData) => {
-    const file = data.thumbnailImageKey?.[0];
+  const onSubmitWithUpload = async (formData: FormData) => {
+    const file = formData.thumbnailImageKey?.[0];
 
-    // 画像が選択されていない場合は既存の URL を使用
+    // 新規作成時に画像が選択されない場合は警告を表示し、必須項目として選択を促す
     if (!file) {
       if (post?.thumbnailImageKey) {
         await onSubmitHandle(
-          { ...data, thumbnailImageKey: post.thumbnailImageKey },
+          { ...formData, thumbnailImageKey: post.thumbnailImageKey },
           reset,
         );
       } else {
@@ -105,7 +93,7 @@ export default function PostForm({
     }
 
     await onSubmitHandle(
-      { ...data, thumbnailImageKey: uploadData.path },
+      { ...formData, thumbnailImageKey: uploadData.path },
       reset,
     );
   };
@@ -155,9 +143,9 @@ export default function PostForm({
           >
             サムネイル画像
           </label>
-          {thumbnailImageUrl && (
+          {imageURL && (
             <Image
-              src={thumbnailImageUrl}
+              src={imageURL}
               alt="サムネイル"
               width={192}
               height={108}

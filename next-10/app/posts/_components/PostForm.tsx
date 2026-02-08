@@ -6,9 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PostFormSchema } from "@/app/_schemas/form";
 import { type PostFormProps } from "@/app/posts/_components/_types/props";
 import { useCategories } from "@/app/admin/posts/_hooks/useCategories";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
-import { supabase } from "@/app/_libs/supabase";
+import { useSupabaseStorage } from "@/app/_hooks/useSupabaseStorage";
 
 type FormData = z.infer<typeof PostFormSchema>;
 
@@ -35,9 +35,6 @@ export default function PostForm({
     },
   });
   const { categories, isLoading } = useCategories();
-  const [thumbnailImageUrl, setThumbnailImageUrl] = useState<string | null>(
-    null,
-  );
 
   useEffect(() => {
     if (!isLoading && post) {
@@ -50,21 +47,8 @@ export default function PostForm({
     }
   }, [isLoading, post, reset]);
 
-  useEffect(() => {
-    if (!post?.thumbnailImageKey) return;
-
-    const fetcher = async () => {
-      const { data } = await supabase.storage
-        .from("blog-nextjs")
-        .createSignedUrl(post.thumbnailImageKey, 3600); // 1時間有効
-
-      if (data?.signedUrl) {
-        setThumbnailImageUrl(data.signedUrl);
-      }
-    };
-
-    fetcher();
-  }, [post?.thumbnailImageKey]);
+  const { storageData } = useSupabaseStorage(post?.thumbnailImageKey);
+  const imageURL = storageData?.signedUrl;
 
   return (
     <>
@@ -112,9 +96,9 @@ export default function PostForm({
             サムネイル画像
           </label>
           <div className="flex-1">
-            {thumbnailImageUrl && (
+            {imageURL && (
               <Image
-                src={thumbnailImageUrl}
+                src={imageURL}
                 alt="サムネイル"
                 width={192}
                 height={108}
