@@ -1,28 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Category, GetCategoriesResponse } from "@/app/_types/categories";
+import { GetCategoriesResponse } from "@/app/_types/categories";
+import { useFetch } from "@/app/_hooks/useFetch";
 
 export function useCategories() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const { data, error, isLoading } = useFetch<{
+    categories: GetCategoriesResponse;
+  }>("/api/admin/categories");
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await fetch("/api/admin/categories");
-        const data: GetCategoriesResponse = await res.json();
-        setCategories(data.categories ?? []);
-      } catch (e) {
-        setError(e instanceof Error ? e : new Error("Failed to fetch categories"));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  return { categories, isLoading, error };
+  return { categories: data?.categories ?? [], isLoading, error };
 }

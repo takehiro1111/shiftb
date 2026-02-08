@@ -5,7 +5,7 @@ import { Prisma } from "@/app/generated/prisma/client";
 type Params = Promise<{ id: string }>;
 
 export async function GET(
-  _request: Request,
+  req: Request,
   {
     params,
   }: {

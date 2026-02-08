@@ -1,29 +1,34 @@
 "use client";
 
 import PostForm from "@/app/admin/posts/_components/PostForm";
-import { z } from "zod";
-import { PostFormSchema } from "@/app/_schemas/form";
+import { PostFormData } from "@/app/admin/posts/_components/_types/props";
 import { useRouter } from "next/navigation";
 import { CreatePostRequest } from "@/app/_types/posts";
+import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
 
 export default function Page() {
   const router = useRouter();
+  const { token } = useSupabaseSession();
 
   const onSubmitHandle = async (
-    data: z.infer<typeof PostFormSchema>,
+    data: PostFormData,
     reset: () => void,
   ): Promise<void> => {
+    if (!token) return;
     try {
       const body: CreatePostRequest = {
         title: data.title,
         content: data.content,
-        thumbnailUrl: data.thumbnailUrl,
+        thumbnailImageKey: data.thumbnailImageKey,
         categoryId: data.categoryId,
       };
 
       await fetch("/api/admin/posts", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
         body: JSON.stringify(body),
       });
 

@@ -1,21 +1,17 @@
 "use client";
 
 import CategoryForm from "@/app/admin/categories/_components/CategoryForm";
+import { Category } from "@/app/_types/categories";
 import { z } from "zod";
 import { CategoryFormSchema } from "@/app/_schemas/form";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import {
-  UpdateCategoryRequest,
-  GetCategoryResponse,
-  Category,
-} from "@/app/_types/categories";
+import { UpdateCategoryRequest } from "@/app/_types/categories";
+import { useFetch } from "@/app/_hooks/useFetch";
 
 export default function Page() {
   const router = useRouter();
   const { id } = useParams();
-  const [categoryData, setCategoryData] = useState<Category | null>(null);
 
   const onSubmitHandle = async (
     data: z.infer<typeof CategoryFormSchema>,
@@ -43,9 +39,8 @@ export default function Page() {
   const onSubmitDeleteHandle = async (reset: () => void): Promise<void> => {
     try {
       await fetch(`/api/admin/categories/${id}`, {
-          method: "DELETE",
-        },
-      );
+        method: "DELETE",
+      });
 
       alert("削除しました。");
       reset();
@@ -55,19 +50,11 @@ export default function Page() {
     }
   };
 
-  useEffect(() => {
-    if (!id) return;
+  const { data, isLoading } = useFetch<{ category: Category }>(
+    `/api/admin/categories/${id}`,
+  );
 
-    const fetcher = async () => {
-      const res = await fetch(`/api/admin/categories/${id}`);
-      const data: GetCategoryResponse = await res.json();
-      setCategoryData(data.category);
-    };
-
-    fetcher();
-  }, [id]);
-
-  if (categoryData === null) return <span>Loading...</span>;
+  if (isLoading) return <p>Loading...</p>;
 
   return (
     <CategoryForm
@@ -75,7 +62,7 @@ export default function Page() {
       onSubmitHandle={onSubmitHandle}
       onSubmitDeleteHandle={onSubmitDeleteHandle}
       showDeleteButton={true}
-      category={categoryData}
+      category={data?.category}
       validationMode="onSubmit"
     />
   );

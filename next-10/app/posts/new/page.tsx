@@ -16,7 +16,7 @@ export default function Page() {
       const body = {
         title: data.title,
         content: data.content,
-        thumbnailUrl: data.thumbnailUrl,
+        thumbnailImageKey: data.thumbnailImageKey,
         categoryId: data.categoryId,
       };
 

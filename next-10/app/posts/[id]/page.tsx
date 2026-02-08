@@ -1,27 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { type PostWithCategories } from "@/app/posts/[id]/_types/form";
 import PostForm from "@/app/posts/_components/PostForm";
+import { PostModel } from "@/app/generated/prisma/models/Post";
+import { useFetch } from "@/app/_hooks/useFetch";
 
 export default function Page() {
-  const [postData, setPostData] = useState<PostWithCategories | null>(null);
   const { id } = useParams();
+  const { data, isLoading } = useFetch<{ post: PostModel }>(`/api/posts/${id}`);
 
-  useEffect(() => {
-    if (!id) return;
+  if (isLoading) return <p>Loading...</p>;
 
-    const fetcher = async () => {
-      const res = await fetch(`/api/posts/${id}`);
-      const { post } = await res.json();
-      setPostData(post);
-    };
-
-    fetcher();
-  }, [id]);
-
-  if (postData === null) return <span>Loading...</span>;
-
-  return <PostForm title="記事詳細" isCreated={false} post={postData} />;
+  return <PostForm title="記事詳細" isCreated={false} post={data?.post} />;
 }

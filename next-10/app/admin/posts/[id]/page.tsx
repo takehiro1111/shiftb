@@ -1,8 +1,7 @@
 "use client";
 
 import PostForm from "@/app/admin/posts/_components/PostForm";
-import { z } from "zod";
-import { PostFormSchema } from "@/app/_schemas/form";
+import { PostFormData } from "@/app/admin/posts/_components/_types/props";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
@@ -11,27 +10,30 @@ import {
   GetPostResponse,
   PostWithCategories,
 } from "@/app/_types/posts";
+import { useSupabaseSession } from "@/app/_hooks/useSupabaseSession";
 
 export default function Page() {
   const router = useRouter();
   const { id } = useParams();
   const [postData, setPostData] = useState<PostWithCategories | null>(null);
+  const { token } = useSupabaseSession();
 
   const onSubmitHandle = async (
-    data: z.infer<typeof PostFormSchema>,
+    data: PostFormData,
     reset: () => void,
   ): Promise<void> => {
+    if (!token) return;
     try {
       const body: UpdatePostRequest = {
         title: data.title,
         content: data.content,
-        thumbnailUrl: data.thumbnailUrl,
+        thumbnailImageKey: data.thumbnailImageKey,
         categoryId: data.categoryId,
       };
 
       await fetch(`/api/admin/posts/${id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: token },
         body: JSON.stringify(body),
       });
 
@@ -44,9 +46,12 @@ export default function Page() {
   };
 
   const onSubmitDeleteHandle = async (reset: () => void): Promise<void> => {
+    if (!token) return;
+
     try {
       await fetch(`/api/admin/posts/${id}`, {
         method: "DELETE",
+        headers: { "Content-Type": "application/json", Authorization: token },
       });
 
       alert("削除しました。");
@@ -58,16 +63,18 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (!id) return;
+    if (!token) return;
 
     const fetcher = async () => {
-      const res = await fetch(`/api/admin/posts/${id}`);
+      const res = await fetch(`/api/admin/posts/${id}`, {
+        headers: { Authorization: token },
+      });
       const data: GetPostResponse = await res.json();
       setPostData(data.post);
     };
 
     fetcher();
-  }, [id]);
+  }, [id, token]);
 
   if (postData === null) return <span>Loading...</span>;
 

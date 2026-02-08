@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/_libs/prisma";
 import { Prisma } from "@/app/generated/prisma/client";
+import { supabase } from "@/app/_libs/supabase";
 
-export async function GET() {
+export async function GET(req: Request) {
+  const token = req.headers.get("Authorization") ?? "";
+  const { error } = await supabase.auth.getUser(token);
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 });
+
   try {
     const posts = await prisma.post.findMany();
     return NextResponse.json({ posts }, { status: 200 });
@@ -18,13 +24,18 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const token = req.headers.get("Authorization") ?? "";
+  const { error } = await supabase.auth.getUser(token);
+  if (error)
+    return NextResponse.json({ status: error.message }, { status: 400 });
+  
   try {
-    const { title, content, thumbnailUrl, categoryId } = await req.json();
+    const { title, content, thumbnailImageKey, categoryId } = await req.json();
     const post = await prisma.post.create({
       data: {
         title,
         content,
-        thumbnailUrl,
+        thumbnailImageKey,
         postCategories: {
           create: { categoryId },
         },
