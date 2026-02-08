@@ -11,6 +11,7 @@ import Image from "next/image";
 import { supabase } from "@/app/_libs/supabase";
 import { v4 as uuidv4 } from "uuid"; // 固有IDを生成するライブラリ
 import { useSupabaseStorage } from "@/app/_hooks/useSupabaseStorage";
+import { Category } from "@/app/_types/categories";
 
 type FormData = z.infer<typeof AdminPostFormSchema>;
 
@@ -65,16 +66,11 @@ export default function PostForm({
   const onSubmitWithUpload = async (formData: FormData) => {
     const file = formData.thumbnailImageKey?.[0];
 
-    // 新規作成時に画像が選択されない場合は警告を表示し、必須項目として選択を促す
     if (!file) {
-      if (post?.thumbnailImageKey) {
-        await onSubmitHandle(
-          { ...formData, thumbnailImageKey: post.thumbnailImageKey },
-          reset,
-        );
-      } else {
-        alert("画像を選択してください");
-      }
+      await onSubmitHandle(
+        { ...formData, thumbnailImageKey: post?.thumbnailImageKey ?? "" },
+        reset,
+      );
       return;
     }
 
@@ -179,7 +175,7 @@ export default function PostForm({
             }
           >
             {isCreated && <option value="">選択してください</option>}
-            {categories.map((category) => (
+            {categories.map((category: Category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>

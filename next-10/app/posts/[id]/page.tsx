@@ -1,17 +1,15 @@
 "use client";
 
-import useSWR from "swr";
 import { useParams } from "next/navigation";
 import PostForm from "@/app/posts/_components/PostForm";
+import { PostModel } from "@/app/generated/prisma/models/Post";
+import { useFetch } from "@/app/_hooks/useFetch";
 
 export default function Page() {
   const { id } = useParams();
-
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-  const { data, isLoading } = useSWR(`/api/posts/${id}`, fetcher);
+  const { data, isLoading } = useFetch<{ post: PostModel }>(`/api/posts/${id}`);
 
   if (isLoading) return <p>Loading...</p>;
 
-  return <PostForm title="記事詳細" isCreated={false} post={data} />;
+  return <PostForm title="記事詳細" isCreated={false} post={data?.post} />;
 }

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import React from "react";
-import { useSupabaseSession } from "../_hooks/useSupabaseSession";
-import { supabase } from "../_libs/supabase";
+import { useSupabaseSession } from "@/app//_hooks/useSupabaseSession";
+import { supabase } from "@/app/_libs/supabase";
 import { useRouter } from "next/navigation";
 
 export const Header: React.FC = () => {

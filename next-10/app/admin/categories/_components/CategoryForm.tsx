@@ -38,9 +38,7 @@ export default function CategoryForm({
         className="w-full px-4 mt-16"
       >
         <div className="flex flex-col gap-2">
-          <label htmlFor="title">
-            カテゴリー名
-          </label>
+          <label htmlFor="title">カテゴリー名</label>
           <input
             type="text"
             id="title"

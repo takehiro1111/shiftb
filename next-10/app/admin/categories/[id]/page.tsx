@@ -1,14 +1,13 @@
 "use client";
 
 import CategoryForm from "@/app/admin/categories/_components/CategoryForm";
+import { Category } from "@/app/_types/categories";
 import { z } from "zod";
 import { CategoryFormSchema } from "@/app/_schemas/form";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-import {
-  UpdateCategoryRequest,
-} from "@/app/_types/categories";
-import useSWR from "swr";
+import { UpdateCategoryRequest } from "@/app/_types/categories";
+import { useFetch } from "@/app/_hooks/useFetch";
 
 export default function Page() {
   const router = useRouter();
@@ -51,9 +50,10 @@ export default function Page() {
     }
   };
 
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
+  const { data, isLoading } = useFetch<{ category: Category }>(
+    `/api/admin/categories/${id}`,
+  );
 
-  const { data, isLoading } = useSWR(`/api/admin/categories/${id}`, fetcher);
   if (isLoading) return <p>Loading...</p>;
 
   return (
@@ -62,7 +62,7 @@ export default function Page() {
       onSubmitHandle={onSubmitHandle}
       onSubmitDeleteHandle={onSubmitDeleteHandle}
       showDeleteButton={true}
-      category={data}
+      category={data?.category}
       validationMode="onSubmit"
     />
   );

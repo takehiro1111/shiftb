@@ -3,12 +3,12 @@
 import { PostModel } from "@/app/generated/prisma/models/Post";
 import DisplayHeader from "@/app/_components/DisplayHeader";
 import Link from "next/link";
-import useSWR from "swr";
+import { useFetch } from "@/app/_hooks/useFetch";
 
 export default function Page() {
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-  const { data, error, isLoading } = useSWR("/api/posts", fetcher);
+  const { data, error, isLoading } = useFetch<{ posts: PostModel[] }>(
+    "/api/posts",
+  );
 
   if (isLoading) return <p>Loading...</p>;
 
